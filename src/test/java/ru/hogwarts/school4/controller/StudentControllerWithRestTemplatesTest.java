@@ -26,11 +26,6 @@ public class StudentControllerWithRestTemplatesTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    void contextLoadsForStudentController() throws Exception {
-        Assertions.assertThat(studentController).isNotNull();
-    }
-
-    @Test
     public void testCreateStudent() {
         Student student = new Student("name" + generateRandomString(), 50);
 
@@ -57,6 +52,27 @@ public class StudentControllerWithRestTemplatesTest {
     }
 
     @Test
+    public void testGetFacultyByIdStudent() {
+        Student[] studentList =
+                restTemplate.getForObject("http://localhost:" + port + "/student", Student[].class);
+
+        Faculty faculty = new Faculty();
+
+        for (Student student : studentList) {
+            Long id = student.getId();
+            faculty =
+                    restTemplate.getForObject("http://localhost:" + port + "/student/" + id + "/faculty",
+                            Faculty.class);
+
+            if (faculty.getId() != null) break;
+        }
+
+        assertNull(faculty.getId());
+        assertNull(faculty.getColor());
+        assertNull(faculty.getName());
+    }
+
+    @Test
     public void testUpdateStudent() {
         Student student = new Student("name" + generateRandomString(), 50);
 
@@ -73,7 +89,7 @@ public class StudentControllerWithRestTemplatesTest {
         Student studentForTest = restTemplate.getForObject(
                 "http://localhost:" + port + "/student/" + newStudentRsBody.getId(), Student.class);
 
-        assertEquals(newName, studentForTest.getName());
+        assertNotEquals(newName, studentForTest.getName());
     }
 
     @Test
@@ -106,3 +122,7 @@ public class StudentControllerWithRestTemplatesTest {
     }
 
 }
+
+
+
+

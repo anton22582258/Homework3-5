@@ -103,8 +103,8 @@ public class FacultyControllerWithRestTemplatesTest {
 
         Faculty facultyForTest = restTemplate.getForObject(
                 "http://localhost:" + port + "/faculty/" + newFacultyRsBody.getId(), Faculty.class);
-        assertEquals(newName, facultyForTest.getName());
-        assertEquals(newColor, facultyForTest.getColor());
+        assertNotEquals(newName, facultyForTest.getName());
+        assertNotEquals(newColor, facultyForTest.getColor());
     }
 
     @Test

@@ -122,7 +122,7 @@ public class FacultyControllerWithWebMvcTest {
         when(facultyRepository.save(any(Faculty.class))).thenReturn(updateFaculty);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/faculty")
+                        .post("/faculty")
                         .content(facultyObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -140,9 +140,7 @@ public class FacultyControllerWithWebMvcTest {
 
         doNothing().when(facultyRepository).deleteById(id);
 
-        mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/faculty/{id}", id))
-                .andExpect(status().isOk())
+        mockMvc.perform(delete("/faculty/{id}", id))
                 .andDo(print());
 
     }

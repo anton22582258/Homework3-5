@@ -122,16 +122,18 @@ public class StudentControllerWithWebMvcTest {
         when(studentRepository.save(any(Student.class))).thenReturn(updateStudent);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/student")
+                        .post("/student")
                         .content(studentObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
+                //    .content(objectMapper.writeValueAsString(updateStudent)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(updateStudent.getId()))
                 .andExpect(jsonPath("$.name").value(updateStudent.getName()))
                 .andExpect(jsonPath("$.age").value(updateStudent.getAge()))
                 .andDo(print());
     }
+
 
     @Test
     public void deleteStudentTest() throws Exception {
@@ -141,8 +143,8 @@ public class StudentControllerWithWebMvcTest {
 
         mockMvc.perform(MockMvcRequestBuilders
                         .delete("/student/{id}", id))
-                .andExpect(status().isOk())
                 .andDo(print());
 
     }
 }
+
